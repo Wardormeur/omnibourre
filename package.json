@@ -1,0 +1,14 @@
+{
+  "name": "omnibar",
+  "version": "1.0.0",
+  "description": "",
+  "main": "background_script.js",
+  "scripts": {
+    "test": "npx web-ext run"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "fuse.js": "^6.4.6"
+  }
+}

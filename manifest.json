@@ -1,0 +1,28 @@
+{
+	"manifest_version": 2,
+	"name": "omnibar",
+	"description": "description",
+	"version": "0.0.1",
+	"icons": {
+		"64": "icons/icon.png"
+	},
+    "omnibox": {
+      "keyword": "!"
+    },
+    "background": {
+		"scripts": [
+            "node_modules/fuse.js/dist/fuse.js",
+			"background_script.js"
+		]
+	},
+    "commands": {
+      "toggle-feature": {
+        "suggested_key": {
+          "default": "Ctrl+Shift+Y",
+          "linux": "Ctrl+Shift+U"
+        },
+        "description": "Send a 'toggle-feature' event"
+      }
+    },
+    "permissions": ["tabs"]
+}
