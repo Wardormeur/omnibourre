@@ -6,8 +6,18 @@ browser.omnibox.setDefaultSuggestion({
 
 const definitions = [{
   element: 'Tab',
-  actions: ['create', 'duplicate'],
-  callbacks: { create: () => browser.tabs.create({}) },
+  actions: ['create', 'duplicate', 'close all'],
+  callbacks: {
+    create: () => browser.tabs.create({}),
+    duplicate: async () => {
+      const curr = await browser.tabs.query({currentWindow: true, active: true});
+      browser.tabs.create({ url: curr[0].url });
+    },
+    'close all': async () => {
+      let tabs = await browser.tabs.query({ currentWindow: true });
+      browser.tabs.remove(tabs.map(t => t.id));
+    },
+  },
 }]
 
 const keys = ['element', 'actions'];
@@ -23,6 +33,5 @@ browser.omnibox.onInputChanged.addListener(listener)
 
 browser.omnibox.onInputEntered.addListener((url, disposition) => {
   let [element, action, rest] = url.split('.');
-  console.log(element, action);
   definitions.find((d) => d.element == element).callbacks[action]();
 });
