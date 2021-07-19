@@ -11,7 +11,7 @@
     },
     "background": {
 		"scripts": [
-            "node_modules/fuse.js/dist/fuse.js",
+            "scripts/fuse.js",
 			"background_script.js"
 		]
 	},

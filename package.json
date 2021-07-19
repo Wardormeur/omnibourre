@@ -4,7 +4,8 @@
   "description": "",
   "main": "background_script.js",
   "scripts": {
-    "test": "npx web-ext run"
+    "test": "npx web-ext run",
+    "build": "npx web-ext build --overwrite-dest --verbose"
   },
   "author": "",
   "license": "ISC",
