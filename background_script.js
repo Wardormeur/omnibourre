@@ -6,7 +6,7 @@ browser.omnibox.setDefaultSuggestion({
 
 const definitions = [{
   element: 'Tab',
-  actions: ['create', 'duplicate', 'close all'],
+  actions: ['create', 'duplicate', 'close all', 'close right', 'close left'],
   callbacks: {
     create: () => browser.tabs.create({}),
     duplicate: async () => {
@@ -17,14 +17,26 @@ const definitions = [{
       let tabs = await browser.tabs.query({ currentWindow: true });
       browser.tabs.remove(tabs.map(t => t.id));
     },
+    'close right': async () => {
+      let tabs = await browser.tabs.query({ currentWindow: true });
+      let tab = await browser.tabs.query({ currentWindow: true, active: true });
+      let filteredTabs = tabs.filter((_t) => _t.index > tab[0].index)
+      browser.tabs.remove(filteredTabs.map(t => t.id));
+    },
+    'close left': async () => {
+      let tabs = await browser.tabs.query({ currentWindow: true });
+      let tab = await browser.tabs.query({ currentWindow: true, active: true });
+      let filteredTabs = tabs.filter((_t) => _t.index < tab[0].index)
+      console.log(filteredTabs);
+      browser.tabs.remove(filteredTabs.map(t => t.id));
+    },
   },
 }]
 
 const keys = ['element', 'actions'];
 const fuse = new Fuse(definitions, { keys });
 function listener(input, suggest) {
-  let res = fuse.search(input);
-  console.log(input, res);
+  let res = fuse.search(input, { includeScore: true });
   let found = res[0].item;
   let suggestions = found.actions.map((a) => ({ content: `${found.element}.${a}`, description: `${found.element} ${a}` }));
   suggest(suggestions);
